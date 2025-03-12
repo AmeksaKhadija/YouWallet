@@ -47,9 +47,10 @@
       => message indiquant que l'utilisateur se déconnecte avec succès
 ```
 
-| Parameter  | Description                       |
-| :-------- :-------------------------------- |
-| `token`  |  **token_de_utulisateur_authentifié**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
+
 
 
 ### Mes infosrmation en tant que utilisateur
@@ -72,9 +73,9 @@
       => wallet et leur balance
 ```
 
-| Parameter | Description                       |
-| :-------- :-------------------------------- |
-| `token` |   **token_de_utulisateur_authentifié**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
 
 
 ### Stokage d'argent dans mon wallet
@@ -85,10 +86,10 @@
       => balance
 ```
 
-| Parameter  | Description                       |
-| :-------- :-------------------------------- |
-| `token` |   **token_de_utulisateur_authentifié**. |
-| `amount` |   **required_decimal,max:10, 2_après_la_vergule**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
+| `amount`      | `integer` | **required_decimal,max:10, 2_après_la_vergule**. |
 
 
 ### retrait de l'argent dans mon wallet
@@ -99,10 +100,10 @@
       => le reste d'argent dans le wallet
 ```
 
-| Parameter  | Description                       |
-| :-------- :-------------------------------- |
-| `token` |   **token_de_utulisateur_authentifié**. |
-| `amount` |   **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
+| `amount`      | `integer` | **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
 
 
 ### envoyer de l'argent
@@ -113,11 +114,11 @@
       => le reste d'argent dans le wallet
 ```
 
-| Parameter  | Description                       |
-| :-------- :-------------------------------- |
-| `token` |   **token_de_utulisateur_authentifié**. |
-| `amount` |   **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
-| `recipient_id`  | `integer` | **required_exists:users**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
+| `recipient_id`      | `integer` | **required_exists:users**. |
+| `amount`      | `integer` | **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
 
 
 ### all transactions
@@ -133,6 +134,6 @@
       => updated_at
 ```
 
-| Parameter  | Description                       |
-| :-------- :-------------------------------- |
-| `token` |   **token_de_utulisateur_authentifié**. |
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `token`      | `sanctum` | **token_de_utulisateur_authentifié**. |
