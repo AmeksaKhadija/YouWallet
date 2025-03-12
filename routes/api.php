@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\WalletController;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +18,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+// Route::middleware('auth:sanctum')->post('logout', function () {
+//     return response()->json([
+//         'message' => 'Logged out successfully'
+//     ]);
 // });
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('infosUser', [AuthController::class, 'infosUser']);
 
-Route::post('register',[AuthController::class,'register']);
-Route::post('login',[AuthController::class,'login']);
+    Route::post('stokage', [WalletController::class, 'stokage']);
+    Route::post('recevoire', [WalletController::class, 'recevoire']);
+    Route::post('envoyer', [WalletController::class, 'envoyer']);
+    Route::post('allTransaction', [TransactionController::class, 'getMyTransactions']);
+});
