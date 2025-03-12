@@ -52,7 +52,7 @@
 | `token`  |  **token_de_utulisateur_authentifié**. |
 
 
-### Mes infosrmation en tant que utilisateur 
+### Mes infosrmation en tant que utilisateur
 
 ```http
   POST /auth/infosUser
@@ -77,7 +77,6 @@
 | `token` |   **token_de_utulisateur_authentifié**. |
 
 
-
 ### Stokage d'argent dans mon wallet
 ```http
   POST /auth/stokage
@@ -91,3 +90,49 @@
 | `token` |   **token_de_utulisateur_authentifié**. |
 | `amount` |   **required_decimal,max:10, 2_après_la_vergule**. |
 
+
+### retrait de l'argent dans mon wallet
+```http
+  POST /auth/retrait
+  Response : 
+      => message indiquant que le retrait effectuer avec success
+      => le reste d'argent dans le wallet
+```
+
+| Parameter  | Description                       |
+| :-------- :-------------------------------- |
+| `token` |   **token_de_utulisateur_authentifié**. |
+| `amount` |   **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
+
+
+### envoyer de l'argent
+```http
+  POST /auth/envoyer
+  Response : 
+      => message indiquant que l'envoye d'argent s'effectuer avec success
+      => le reste d'argent dans le wallet
+```
+
+| Parameter  | Description                       |
+| :-------- :-------------------------------- |
+| `token` |   **token_de_utulisateur_authentifié**. |
+| `amount` |   **required__decimal,max:10,2_après_la_vergule,superieur_à:0,superieur_que:ballance_du_user**. |
+| `recipient_id`  | `integer` | **required_exists:users**. |
+
+
+### all transactions
+```http
+  POST /auth/allTransaction
+  Response : 
+      => array du transactions de l'utulisateur authentifié
+      => sender_wallet_id
+      => recipient_wallet_id
+      => amount
+      => type 
+      => created_at
+      => updated_at
+```
+
+| Parameter  | Description                       |
+| :-------- :-------------------------------- |
+| `token` |   **token_de_utulisateur_authentifié**. |

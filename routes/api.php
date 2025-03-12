@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('infosUser', [AuthController::class, 'infosUser']);
 
     Route::post('stokage', [WalletController::class, 'stokage']);
-    Route::post('recevoire', [WalletController::class, 'recevoire']);
+    Route::post('retrait', [WalletController::class, 'retrait']);
     Route::post('envoyer', [WalletController::class, 'envoyer']);
     Route::post('allTransaction', [TransactionController::class, 'getMyTransactions']);
 });

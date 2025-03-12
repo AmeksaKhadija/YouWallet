@@ -13,16 +13,16 @@ class WalletController extends Controller
     //
     public function stokage(Request $request)
     {
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
+
             $user = auth()->user();
             $amount = $request->input('amount');
 
             if ($amount <= 0) {
                 return response()->json([
                     'message' => 'amount non validée '
-                ], 400);
+                ], 422);
             }
 
             $user->wallet->balance += $amount;
@@ -50,46 +50,46 @@ class WalletController extends Controller
         }
     }
 
-    public function recevoire(Request $request)
+    public function retrait(Request $request)
     {
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
+
             $user = auth()->user();
             $amount = $request->input('amount');
 
             if ($amount <= 0) {
                 return response()->json([
-                    'message' => 'Invalid amount'
-                ], 400);
+                    'message' => 'impossible de retirer cet argent'
+                ], 422);
             }
 
             if ($user->wallet->balance < $amount) {
                 return response()->json([
-                    'message' => 'Insufficient balance'
-                ], 400);
+                    'message' => 'vous avez moins de cet argent que vous devez envoyer dans votre wallet'
+                ], 422);
             }
 
             $user->wallet->balance -= $amount;
             $user->wallet->save();
 
-            $transaction = Transaction::create([
+            Transaction::create([
                 'sender_wallet_id' => $user->wallet->id,
                 'recipient_wallet_id' => $user->wallet->id,
                 'amount' => $amount,
-                'type' => 'recevoire'
+                'type' => 'retrait'
             ]);
 
             DB::commit();
 
             return response()->json([
-                'message' => 'recevoire successful',
+                'message' => 'retrait avec success',
                 'balance' => $user->wallet->balance
             ]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
-                'message' => 'recevoire failed',
+                'message' => 'retrait failed',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -100,38 +100,40 @@ class WalletController extends Controller
         DB::beginTransaction();
 
         try {
+
             $user = auth()->user();
             $amount = $request->input('amount');
-            $wallet_id = $request->input('recipient_id');
-            $wallet = Wallet::find($wallet_id);
-
-            if (!$wallet) {
-                return response()->json([
-                    'message' => 'Wallet not found'
-                ], 404);
-            }
+            $receiver_id = $request->input('recipient_id');
+            $reciever_wallet = Wallet::find($receiver_id);
 
             if ($amount <= 0) {
                 return response()->json([
-                    'message' => 'Invalid amount'
-                ], 400);
+                    'message' => 'impossible d envoyer un amount moins de 0'
+                ], 422);
             }
 
+            
             if ($user->wallet->balance < $amount) {
                 return response()->json([
-                    'message' => 'Insufficient balance'
-                ], 400);
+                    'message' => 'Balance que vous avez moins de amount que vous devez envoyer'
+                ], 422);
             }
-
+            
+            if (!$reciever_wallet) {
+                return response()->json([
+                    'message' => 'cette wallet not found'
+                ], 404);
+            }
+            
             $user->wallet->balance -= $amount;
             $user->wallet->save();
 
-            $wallet->balance += $amount;
-            $wallet->save();
+            $reciever_wallet->balance += $amount;
+            $reciever_wallet->save();
 
-            $transaction = Transaction::create([
+            Transaction::create([
                 'sender_wallet_id' => $user->wallet->id,
-                'recipient_wallet_id' => $wallet->id,
+                'recipient_wallet_id' => $reciever_wallet->id,
                 'amount' => $amount,
                 'type' => 'envoyer'
             ]);
